@@ -46,7 +46,7 @@ def autoDeleteScoreCheck(user):
 def main():
   reddit = praw.Reddit('byaccidentbot', user_agent='pi:com.example.bybottest:v0.0.1 by /u/thecrazybandicoot')
   phrase = re.compile(r'.*\bon accident\b.*', flags=re.I)
-  subredditSubmissions = reddit.subreddit('space').hot(limit=20)
+  subredditSubmissions = reddit.subreddit('byaccidentbot').hot(limit=20)
   botAccount = reddit.user.me()
 
   # Start score checker.
@@ -63,7 +63,7 @@ def main():
     for comment in submission.comments.list():
       if searchForPhrase(phrase, comment.body):
         replyToComment(comment)
-        #print('ID: ' + comment.id + ' ' + comment.body)
+        print('ID: ' + comment.id + ' ' + comment.body)
 
 if __name__ == "__main__":
     main()
