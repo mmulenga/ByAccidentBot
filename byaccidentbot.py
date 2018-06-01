@@ -2,20 +2,16 @@ import praw
 import re
 import threading
 
-# Tests the regular expression to see what types of matches it comes up with
-# can be commented out for prod.
-# Pre: file - A valid text file containing test phrases.
-# Post: Output of all phrases matching the regex pattern.
-def test(filename):
-  testFile = open(filename, "r")
-  print('Opened test file...')
+def initCommentDict(dict):
+  try:
+    visitedCommentFile = open('visitedComments.txt', 'r')
+  except OSError:
+    print('File not found.')
+    return
 
-  for line in testFile:
-    if searchForPhrase(line):
-      print(line)
-
-  testFile.close()
-  print('Closed test file...')
+  for keyValue in visitedCommentFile:
+    key,value = keyValue.split(' ')
+    dict[key] = value
 
 # Searches for instances of 'on accident' within the given comment.
 # Pre:  phrase - A valid regex pattern.
@@ -44,26 +40,19 @@ def autoDeleteScoreCheck(user):
       comment.delete()
 
 def main():
+  commentDictionary = dict()
   reddit = praw.Reddit('byaccidentbot', user_agent='pi:com.example.bybottest:v0.0.1 by /u/thecrazybandicoot')
   phrase = re.compile(r'.*\bon accident\b.*', flags=re.I)
-  subredditSubmissions = reddit.subreddit('byaccidentbot').hot(limit=20)
+  commentStream = reddit.subreddit('byaccidentbot').stream.comments()
   botAccount = reddit.user.me()
 
   # Start score checker.
   autoDeleteScoreCheck(botAccount)
 
-  # Uncomment for testing.
-  # test('regtesttext.txt')
-
-  for submission in subredditSubmissions:
-    print('------ ' + submission.title + ' ------')
-
-    submission.comments.replace_more(limit=None)
-
-    for comment in submission.comments.list():
-      if searchForPhrase(phrase, comment.body):
-        replyToComment(comment)
-        print('ID: ' + comment.id + ' ' + comment.body)
+  for comment in commentStream:
+    if searchForPhrase(phrase, comment.body):
+      replyToComment(comment)
+      print('ID: ' + comment.id + ' ' + comment.body)
 
 if __name__ == "__main__":
     main()
