@@ -7,19 +7,22 @@ class TestByAccidentBot(unittest.TestCase):
   def setUp(self):
     self.bot = ByAccidentBot()
 
-  # Tests the regular expression to see what types of matches it comes up with
-  # Pre: file - A valid text file containing test phrases.
-  # Post: Output of all phrases matching the regex pattern.
-  ##  self.assertTrue()
-
   def test_initCommentDict(self):
-    with self.assertRaises(OSError):
-      self.bot.populateCommentDict('fakefile.txt')
-
+    self.assertEqual(self.bot.populateCommentDict('fakefile.txt'), None)
     self.assertEqual(len(self.bot.commentDictionary), 0)
+
     self.bot.populateCommentDict('testing/visitedComments.txt')
     self.assertEqual(len(self.bot.commentDictionary), 1)
     self.assertIn('test', self.bot.commentDictionary)
+
+  def test_searchForPhrase(self):
+    self.assertEqual()
+  
+  def test_replyToComment(self):
+    self.assertEqual()
+  
+  def test_autoDeleteScoreCheck(self):
+    self.assertEqual()
   
   if __name__ == "__main__":
     unittest.main()
