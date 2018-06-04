@@ -2,6 +2,7 @@ import unittest
 import praw
 import re
 from byaccidentbot import ByAccidentBot
+from unittest.mock import patch
 
 class TestByAccidentBot(unittest.TestCase):
   def setUp(self):
@@ -16,13 +17,16 @@ class TestByAccidentBot(unittest.TestCase):
     self.assertIn('test', self.bot.commentDictionary)
 
   def test_searchForPhrase(self):
-    self.assertEqual()
+    self.assertTrue(self.bot.searchForPhrase('on accident'))
+    self.assertFalse(self.bot.searchForPhrase('not a phrase'))
   
-  def test_replyToComment(self):
-    self.assertEqual()
-  
+  @patch('praw.models.Comment')
+  def test_replyToComment(self, MockComment):
+    mockComment = MockComment(self.bot.reddit)
+    self.assertTrue(self.bot.replyToComment(mockComment))
+
   def test_autoDeleteScoreCheck(self):
-    self.assertEqual()
+    #self.assertEqual()
   
   if __name__ == "__main__":
     unittest.main()
