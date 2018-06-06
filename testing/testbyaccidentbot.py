@@ -24,9 +24,6 @@ class TestByAccidentBot(unittest.TestCase):
   def test_replyToComment(self, MockComment):
     mockComment = MockComment(self.bot.reddit)
     self.assertTrue(self.bot.replyToComment(mockComment))
-
-  def test_autoDeleteScoreCheck(self):
-    #self.assertEqual()
   
   if __name__ == "__main__":
     unittest.main()
