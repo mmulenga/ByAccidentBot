@@ -64,7 +64,7 @@ class ByAccidentBot():
   # every hour to see if the score has changed.
   # Gives users a method to delete the comment if they dislike it.
   def autoDeleteScoreCheck(self):
-    threading.Timer(3600.0, self.autoDeleteScoreCheck, [self.account]).start()
+    threading.Timer(3600.0, self.autoDeleteScoreCheck, []).start()
 
     for comment in self.account.comments.new(limit=50):
       if comment.score < 0:
