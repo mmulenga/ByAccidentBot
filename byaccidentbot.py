@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 class ByAccidentBot():
   def __init__(self):
     self.commentDictionary = dict()
-    self.reddit = praw.Reddit('byaccidentbot', user_agent='pi:com.example.bybottest:v0.0.1 by /u/thecrazybandicoot')
+    self.reddit = praw.Reddit('byaccidentbot', user_agent='pi:com.bab.byaccidentbot:v1.0.0 by /u/thecrazybandicoot')
     self.searchPhrase = re.compile(r'.*\bon accident\b.*', flags=re.I)
     self.account = self.reddit.user.me()
 
@@ -45,7 +45,7 @@ class ByAccidentBot():
         if ancestor.id in self.commentDictionary:
           return False
       try:
-        comment.reply('Just a friendly reminder that it\'s \"by accident\".')
+        comment.reply('https://gfycat.com/gifs/detail/JointHiddenHummingbird  \nJust a friendly reminder that it\'s \"by accident\".  \n***** \n^(Downvote to 0 to delete this comment.)')
         self.commentDictionary[comment.id] = datetime.strftime(datetime.now(), '%d/%m/%y::%H:%M:%S')
 
         try:
@@ -100,7 +100,7 @@ def main():
   bot.autoClearVisitedComments()
   bot.autoDeleteScoreCheck()
 
-  commentStream = bot.reddit.subreddit('byaccidentbot').stream.comments()
+  commentStream = bot.reddit.subreddit('all').stream.comments()
 
   for comment in commentStream:
     if bot.searchForPhrase(comment.body):
