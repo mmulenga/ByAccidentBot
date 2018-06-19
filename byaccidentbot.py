@@ -111,24 +111,42 @@ class ByAccidentBot():
       print('Error writing to file.')
 
 def main():
-  # Initialize the bot.
-  bot = ByAccidentBot()
-
-  bot.populateCommentDict('visited.txt')
-  #bot.autoClearVisitedComments()
-  bot.autoDeleteScoreCheck()
-
-  print('Running...')
-
-  commentStream = bot.reddit.subreddit('all').stream.comments()
-
-  for comment in commentStream:
+  while True:
     try:
-      if bot.searchForPhrase(comment.body):
-        bot.replyToComment(comment)
-        print('ID: ' + comment.id + ' ' + comment.body)
-    except prawcore.exceptions.PrawcoreException:
-      time.sleep(60)
+      # Initialize the bot.
+      bot = None
+
+      while bot == None:
+        try:
+          bot = ByAccidentBot()
+        except prawcore.exceptions.PrawcoreException:
+          print('Error creating bot instance.')
+          time.sleep(60)
+
+      bot.populateCommentDict('visited.txt')
+      #bot.autoClearVisitedComments()
+      bot.autoDeleteScoreCheck()
+
+      print('Running...')
+
+      try:
+        commentStream = bot.reddit.subreddit('all').stream.comments()
+      except prawcore.exceptions.PrawcoreException:
+        print('Error accessing comment stream.')
+        time.sleep(60)
+
+      for comment in commentStream:
+        try:
+          if bot.searchForPhrase(comment.body):
+            bot.replyToComment(comment)
+            print('ID: ' + comment.id + ' ' + comment.body)
+        except prawcore.exceptions.PrawcoreException:
+          print('Error connecting to server.')
+          time.sleep(60)
+    except Exception:
+      print('An error occurred restarting the bot...')
+      time.sleep(10)
+      pass
 
 if __name__ == "__main__":
   main()
