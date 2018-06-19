@@ -127,8 +127,8 @@ def main():
       if bot.searchForPhrase(comment.body):
         bot.replyToComment(comment)
         print('ID: ' + comment.id + ' ' + comment.body)
-      except prawcore.exceptions.PrawcoreException:
-        time.sleep(60)
+    except prawcore.exceptions.PrawcoreException:
+      time.sleep(60)
 
 if __name__ == "__main__":
   main()
