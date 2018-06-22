@@ -1,6 +1,7 @@
 praw.ini
 .vscode
-visited.txt
+*.txt
+firebase-credentials.json
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

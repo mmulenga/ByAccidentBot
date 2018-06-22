@@ -144,8 +144,8 @@ def main():
           print('Error connecting to server.')
           time.sleep(60)
     except Exception:
-      print('An error occurred restarting the bot...')
-      time.sleep(10)
+      print('An error occurred. Restarting the bot...')
+      time.sleep(60)
       pass
 
 if __name__ == "__main__":

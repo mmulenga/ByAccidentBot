@@ -1,11 +1,11 @@
 import unittest
 import praw
-import re
 from byaccidentbot import ByAccidentBot
 from unittest.mock import patch
 
 class TestByAccidentBot(unittest.TestCase):
-  def setUp(self):
+  @classmethod
+  def setUpClass(self):
     self.bot = ByAccidentBot()
 
   def test_initCommentDict(self):
@@ -13,8 +13,7 @@ class TestByAccidentBot(unittest.TestCase):
     self.assertEqual(len(self.bot.commentDictionary), 0)
 
     self.bot.populateCommentDict('testing/visitedComments.txt')
-    self.assertEqual(len(self.bot.commentDictionary), 1)
-    self.assertIn('test', self.bot.commentDictionary)
+    self.assertEqual(len(self.bot.commentDictionary), 11)
 
   def test_searchForPhrase(self):
     self.assertTrue(self.bot.searchForPhrase('on accident'))
