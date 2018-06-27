@@ -3,7 +3,8 @@ import prawcore.exceptions
 import re
 import threading
 import time
-from datetime import datetime, timedelta
+from firebase import Firebase
+from datetime import datetime, timedelta, timezone
 
 class ByAccidentBot():
   def __init__(self):
@@ -11,17 +12,17 @@ class ByAccidentBot():
     self.searchPhrase = re.compile(r'.*\bon accident\b.*', flags=re.I)
     self.reddit = praw.Reddit('byaccidentbot', user_agent='pi:com.bab.byaccidentbot:v1.0.0 by /u/thecrazybandicoot')
     self.account = self.reddit.user.me()
+    self.fb = Firebase()
 
   # Populates the comment dictionary from the provided file.
-  # Pre:  filename - A file name of a valid txt file.
+  # Pre:  A successful connection with Firebase can be established.
   # Post: Success - The dictionary gets populated with comments.
   #       Failure - Error message is printed and method returns.
-  def populateCommentDict(self, filename):
+  def populateCommentDict(self):
     try:
-      with open(filename, 'r') as visitedFile:
-        for line in visitedFile:
-          key, value = line.split(' ')
-          self.commentDictionary[key] = value
+      for item in self.fb.pull('comments'):
+        response = item.to_dict()
+        self.commentDictionary[response['id']] = response['timestamp']
     except OSError:
       print('File not found.')
       return
@@ -46,26 +47,24 @@ class ByAccidentBot():
 
       while not ancestor.is_root:
         ancestor = ancestor.parent()
-
         if ancestor.id in self.commentDictionary:
           return False
+
       try:
         comment.reply('https://gfycat.com/gifs/detail/JointHiddenHummingbird  \nThis is a friendly reminder \
         that it\'s \"by accident\" and not \"on accident\".  \n***** \n^(Downvote to 0 to delete this comment.)')
+        now = datetime.now(timezone.utc)
+
+        # Set the dictionary entry
+        self.commentDictionary[comment.id] = now
+        # Set the database entry
+        self.fb.push('comments', comment.id, now)
         
-        self.commentDictionary[comment.id] = datetime.strftime(datetime.now(), '%d/%m/%y::%H:%M:%S')
-
-        try:
-          with open('visited.txt', 'a') as visitedFile:
-            visitedFile.write(comment.id + ' ' + self.commentDictionary.get(comment.id) + '\n')
-        except OSError:
-          print('File not found.')
-          return False
-
         return True
       except prawcore.exceptions.PrawcoreException:
         print('Unable to reply to comment.')
-        time.sleep(60)
+        time.sleep(10)
+
         return False
 
   # Automatically deletes any comment that gets downvoted below 0, checking
@@ -84,32 +83,6 @@ class ByAccidentBot():
         print('Unable to delete comment.')
         time.sleep(60)
   
-  # Clear all comments within the 'visited' file that are older than a day old.
-  # Pre: 'visited' is a valid text file.
-  # Post: All comments older than a day are deleted.
-  def autoClearVisitedComments(self):
-    threading.Timer(86400.0, self.autoClearVisitedComments, []).start()
-    visitedDictionary = dict()
-
-    try:
-      with open('visited.txt', 'r') as visitedFile:
-        for line in visitedFile:
-          comment, time = line.split(' ')
-          dt = datetime.strptime(time.strip(), '%d/%m/%y::%H:%M:%S')
-          
-          if datetime.now() - dt < timedelta(days=1) :
-            visitedDictionary[comment] = time.strip()
-    except OSError:
-      print('File not found.')
-      return
-
-    try:
-      with open('visited.txt', 'w') as visitedFile:
-        for key, value in visitedDictionary.items():
-          visitedFile.write(key + ' ' + value + '\n')
-    except OSError:
-      print('Error writing to file.')
-
 def main():
   while True:
     try:
@@ -123,8 +96,7 @@ def main():
           print('Error creating bot instance.')
           time.sleep(60)
 
-      bot.populateCommentDict('visited.txt')
-      #bot.autoClearVisitedComments()
+      bot.populateCommentDict()
       bot.autoDeleteScoreCheck()
 
       print('Running...')

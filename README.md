@@ -1,4 +1,4 @@
-# By Accident Bot
+# By-Accident-Bot
 > A reddit bot built to correct and track the usage of the phrase "on accident" on reddit.
 
 ## How does it work?
@@ -9,7 +9,7 @@ ID to a database which is later read from to create a statistical graph. Ultimat
 would like to see if the bot has a noticeable effect on the frequency of the usage of
 "on accident".  
 
-Disclaimer: Please don't take this too seriously! Above all else this is a project for me
+Disclaimer: Please don't take the bot too seriously! Above all else, this is a project for me
 to expand my programming skills.
 
 ![It's by accident!](https://thumbs.gfycat.com/JointHiddenHummingbird-size_restricted.gif)

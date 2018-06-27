@@ -1,6 +1,7 @@
 import unittest
 import time
 from firebase import Firebase
+from datetime import datetime, timezone
 
 class TestFirebase(unittest.TestCase):
   @classmethod
@@ -18,19 +19,21 @@ class TestFirebase(unittest.TestCase):
       return
 
   def test_push(self):
-    for comment in self.commentDictionary.items():
-      self.fb.push(comment)
+    for k, v in self.commentDictionary.items():
+      self.fb.push('test_comments', k, v)
 
   def test_pull(self):
-    data = self.fb.pull()
+    response = dict()
 
-    for item in data.each():
-      print(item.val())
+    for data in self.fb.pull('test_comments'):
+      response = data.to_dict()
 
-  @classmethod
-  def tearDownClass(self):
-    for comment in self.commentDictionary.items():
-      self.fb.db.child('comments').child(comment[0]).remove()
+    self.assertEqual(response['id'], 'e0j9iet')
+    self.assertEqual(response['timestamp'], datetime(2018, 6, 27, 18, 0, tzinfo=timezone.utc))
+
+    print(type(response['timestamp']) is datetime)
+      
+
 
 if __name__ == "__main__":
   unittest.main()

@@ -9,11 +9,10 @@ class TestByAccidentBot(unittest.TestCase):
     self.bot = ByAccidentBot()
 
   def test_initCommentDict(self):
-    self.assertEqual(self.bot.populateCommentDict('fakefile.txt'), None)
     self.assertEqual(len(self.bot.commentDictionary), 0)
 
-    self.bot.populateCommentDict('testing/visitedComments.txt')
-    self.assertEqual(len(self.bot.commentDictionary), 11)
+    self.bot.populateCommentDict()
+    self.assertGreater(len(self.bot.commentDictionary), 0)
 
   def test_searchForPhrase(self):
     self.assertTrue(self.bot.searchForPhrase('on accident'))
