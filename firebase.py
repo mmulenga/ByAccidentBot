@@ -1,13 +1,12 @@
 import firebase_admin
 import google.cloud.firestore_v1beta1
-from firebase_admin import credentials
-from firebase_admin import firestore
+from firebase_admin import firestore, credentials
 from datetime import datetime, timedelta
 
 class Firebase():
   def __init__(self):
-    cred = credentials.Certificate('firebase-credentials.json')
-    default_app = firebase_admin.initialize_app(cred)
+    self.cred = credentials.Certificate('firebase-credentials.json')
+    self.default_app = firebase_admin.initialize_app(self.cred)
 
     self.db = firestore.client()
 
@@ -30,4 +29,12 @@ class Firebase():
     query = coll_ref.where(u'timestamp', u'>', delta)
 
     return query.get()
+
+  def pullAll(self, collection):
+    coll_ref = self.db.collection(collection)
+    query = coll_ref.order_by(u'timestamp', direction=firestore.Query.ASCENDING)
+    return query.get()
+
+  def delete(self):
+    firebase_admin.delete_app(self.default_app)
     

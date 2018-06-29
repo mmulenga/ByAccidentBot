@@ -51,14 +51,15 @@ class ByAccidentBot():
           return False
 
       try:
-        comment.reply('https://gfycat.com/gifs/detail/JointHiddenHummingbird  \nThis is a friendly reminder \
-        that it\'s \"by accident\" and not \"on accident\".  \n***** \n^(Downvote to 0 to delete this comment.)')
         now = datetime.now(timezone.utc)
 
         # Set the dictionary entry
         self.commentDictionary[comment.id] = now
         # Set the database entry
         self.fb.push('comments', comment.id, now)
+
+        comment.reply('https://gfycat.com/gifs/detail/JointHiddenHummingbird  \nThis is a friendly reminder \
+        that it\'s \"by accident\" and not \"on accident\".  \n***** \n^(Downvote to 0 to delete this comment.)')
         
         return True
       except prawcore.exceptions.PrawcoreException:
@@ -116,6 +117,7 @@ def main():
           print('Error connecting to server.')
           time.sleep(60)
     except Exception:
+      bot.fb.delete()
       print('An error occurred. Restarting the bot...')
       time.sleep(60)
       pass

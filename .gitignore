@@ -2,6 +2,7 @@ praw.ini
 .vscode
 *.txt
 firebase-credentials.json
+temp-plot.html
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
