@@ -6,7 +6,7 @@ from firebase import Firebase
 fb = Firebase()
 commentDictionary = dict()
 timeList = list()
-occurenceDictionary = dict()
+occurrenceDictionary = dict()
 
 def countOccurrences():
   for item in fb.pullAll('comments'):
@@ -17,10 +17,10 @@ def countOccurrences():
     timeList.append(value.date())
 
   for item in timeList:
-    if item in occurenceDictionary:
-      occurenceDictionary[item] += 1
+    if item in occurrenceDictionary:
+      occurrenceDictionary[item] += 1
     else:
-      occurenceDictionary[item] = 1
+      occurrenceDictionary[item] = 1
 
 def to_unix_time(dt):
     epoch =  datetime.datetime.utcfromtimestamp(0)
@@ -29,8 +29,8 @@ def to_unix_time(dt):
 countOccurrences()
 
 data = [go.Scatter(
-            x=list(occurenceDictionary.keys()), # keys go here
-            y=list(occurenceDictionary.values()))] # values go here
+            x=list(occurrenceDictionary.keys()), # keys go here
+            y=list(occurrenceDictionary.values()))] # values go here
 
 layout = go.Layout(xaxis = dict(
                    range = [to_unix_time(min(commentDictionary.values()).replace(tzinfo=None)),

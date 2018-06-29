@@ -12,4 +12,6 @@ would like to see if the bot has a noticeable effect on the frequency of the usa
 Disclaimer: Please don't take the bot too seriously! Above all else, this is a project for me
 to expand my programming skills.
 
-![It's by accident!](https://thumbs.gfycat.com/JointHiddenHummingbird-size_restricted.gif)
+# Occurrence Graph
+![Occurrence Graph](https://i.imgur.com/KcS2m6k.png)
+![It's by accident!](https://imgur.com/a/TFrJZ9p)
