@@ -23,7 +23,8 @@ class ByAccidentBot():
       for item in self.fb.pull('comments'):
         response = item.to_dict()
         self.commentDictionary[response['id']] = response['timestamp']
-    except OSError:
+    except OSError as e:
+      print(e)
       print('File not found.')
       return
 
@@ -62,7 +63,8 @@ class ByAccidentBot():
         that it\'s \"by accident\" and not \"on accident\".  \n***** \n^(Downvote to 0 to delete this comment.)')
         
         return True
-      except prawcore.exceptions.PrawcoreException:
+      except prawcore.exceptions.PrawcoreException as e:
+        print(e)
         print('Unable to reply to comment.')
         time.sleep(10)
 
@@ -80,7 +82,7 @@ class ByAccidentBot():
       try:
         if comment.score <= 0:
           comment.delete()
-      except prawcore.exceptions.PrawcoreException:
+      except prawcore.exceptions.PrawcoreException as e:
         print('Unable to delete comment.')
         time.sleep(60)
   
@@ -93,7 +95,7 @@ def main():
       while bot == None:
         try:
           bot = ByAccidentBot()
-        except prawcore.exceptions.PrawcoreException:
+        except prawcore.exceptions.PrawcoreException as e:
           print('Error creating bot instance.')
           time.sleep(60)
 
@@ -104,7 +106,8 @@ def main():
 
       try:
         commentStream = bot.reddit.subreddit('all').stream.comments()
-      except prawcore.exceptions.PrawcoreException:
+      except prawcore.exceptions.PrawcoreException as e:
+        print(e)
         print('Error accessing comment stream.')
         time.sleep(60)
 
@@ -113,11 +116,13 @@ def main():
           if bot.searchForPhrase(comment.body):
             bot.replyToComment(comment)
             print('ID: ' + comment.id + ' ' + comment.body)
-        except prawcore.exceptions.PrawcoreException:
+        except prawcore.exceptions.PrawcoreException as e:
+          print(e)
           print('Error connecting to server.')
           time.sleep(60)
-    except Exception:
+    except Exception as e:
       bot.fb.delete()
+      print(e)
       print('An error occurred. Restarting the bot...')
       time.sleep(60)
       pass

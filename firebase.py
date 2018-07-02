@@ -7,7 +7,6 @@ class Firebase():
   def __init__(self):
     self.cred = credentials.Certificate('firebase-credentials.json')
     self.default_app = firebase_admin.initialize_app(self.cred)
-
     self.db = firestore.client()
 
   def push(self, collection, key, value):
