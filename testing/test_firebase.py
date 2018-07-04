@@ -27,8 +27,10 @@ class TestFirebase(unittest.TestCase):
 
     for data in self.fb.pull('test_comments'):
       response = data.to_dict()
+    
+    print(response)
 
-    self.assertEqual(response['id'], 'e0j9iet')
+    self.assertIn('e0j9iet', response)
     self.assertEqual(response['timestamp'], datetime(2018, 6, 27, 18, 0, tzinfo=timezone.utc))
 
     print(type(response['timestamp']) is datetime)

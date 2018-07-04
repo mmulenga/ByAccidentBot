@@ -18,10 +18,10 @@ class TestByAccidentBot(unittest.TestCase):
     self.assertTrue(self.bot.searchForPhrase('on accident'))
     self.assertFalse(self.bot.searchForPhrase('not a phrase'))
   
-  @patch('praw.models.Comment')
-  def test_replyToComment(self, MockComment):
-    mockComment = MockComment(self.bot.reddit)
-    self.assertTrue(self.bot.replyToComment(mockComment))
+  #@patch('praw.models.Comment')
+  #def test_replyToComment(self, MockComment):
+  #  mockComment = MockComment(self.bot.reddit)
+  #  self.assertTrue(self.bot.replyToComment(mockComment))
   
   if __name__ == "__main__":
     unittest.main()
