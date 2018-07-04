@@ -1,6 +1,5 @@
 praw.ini
 .vscode
-*.txt
 firebase-credentials.json
 temp-plot.html
 
