@@ -9,16 +9,9 @@ from datetime import datetime, timedelta, timezone
 class ByAccidentBot():
   commentDictionary = dict()
   searchPhrase = re.compile(r'.*\bon accident\b.*', flags=re.I)
-  fb = Firebase()
-
-  try:
-    reddit = praw.Reddit('byaccidentbot', user_agent='ec2:com.bab.byaccidentbot:v1.0.0 by /u/thecrazybandicoot')
-  except:
-    reddit = praw.Reddit(client_id='CLIENT_ID',
-                     client_secret="CLIENT_SECRET", password='PASSWORD',
-                     user_agent='USERAGENT', username='USERNAME')
-
+  reddit = praw.Reddit('byaccidentbot', user_agent='ec2:com.bab.byaccidentbot:v1.0.0 by /u/thecrazybandicoot')
   account = reddit.user.me()
+  fb = Firebase()
 
   # Populates the comment dictionary from the provided file.
   # Pre:  A successful connection with Firebase can be established.
