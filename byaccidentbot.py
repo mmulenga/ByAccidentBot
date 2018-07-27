@@ -7,12 +7,11 @@ from firebase import Firebase
 from datetime import datetime, timedelta, timezone
 
 class ByAccidentBot():
-  def __init__(self):
-    self.commentDictionary = dict()
-    self.searchPhrase = re.compile(r'.*\bon accident\b.*', flags=re.I)
-    self.reddit = praw.Reddit('byaccidentbot', user_agent='pi:com.bab.byaccidentbot:v1.0.0 by /u/thecrazybandicoot')
-    self.account = self.reddit.user.me()
-    self.fb = Firebase()
+  commentDictionary = dict()
+  searchPhrase = re.compile(r'.*\bon accident\b.*', flags=re.I)
+  reddit = praw.Reddit('byaccidentbot', user_agent='ec2:com.bab.byaccidentbot:v1.0.0 by /u/thecrazybandicoot')
+  account = reddit.user.me()
+  fb = Firebase()
 
   # Populates the comment dictionary from the provided file.
   # Pre:  A successful connection with Firebase can be established.
