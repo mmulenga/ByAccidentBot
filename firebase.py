@@ -1,3 +1,4 @@
+import os
 import firebase_admin
 import google.cloud.firestore_v1beta1
 from firebase_admin import firestore, credentials
@@ -5,7 +6,11 @@ from datetime import datetime, timedelta
 
 class Firebase():
   def __init__(self):
-    self.cred = credentials.Certificate('firebase-credentials.json')
+    try:
+      self.cred = credentials.Certificate('firebase-credentials.json')
+    except:
+      self.cred = credentials.Certificate(os.getenv('FIREBASE_CREDENTIALS'))
+
     self.default_app = firebase_admin.initialize_app(self.cred)
     self.db = firestore.client()
 
