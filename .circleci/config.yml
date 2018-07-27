@@ -48,6 +48,7 @@ jobs:
           name: run tests
           command: |
             . venv/bin/activate
+            echo $FIREBASE_CREDENTIALS | base64 --decode --ignore-garbage > ${HOME}/firebase-credentials.json
             praw_client_id=$CLIENT_ID praw_client_secret=$CLIENT_SECRET praw_username=$USERNAME praw_password=$PASSWORD python3 -m unittest testing/test_byaccidentbot.py
 
       - store_artifacts:
