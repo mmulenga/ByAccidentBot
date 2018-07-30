@@ -15,17 +15,11 @@ class ByAccidentBot():
 
   # Populates the comment dictionary from the provided file.
   # Pre:  A successful connection with Firebase can be established.
-  # Post: Success - The dictionary gets populated with comments.
-  #       Failure - Error message is printed and method returns.
+  # Post: The dictionary gets populated with comments.
   def populateCommentDict(self):
-    try:
-      for item in self.fb.pull('comments'):
-        response = item.to_dict()
-        self.commentDictionary[response['id']] = response['timestamp']
-    except OSError as e:
-      print(e)
-      print('File not found.')
-      return
+    for item in self.fb.pull('comments'):
+      response = item.to_dict()
+      self.commentDictionary[response['id']] = response['timestamp']
 
   # Searches for instances of 'on accident' within the given comment.
   # Pre:  comment - A valid reddit comment.
@@ -41,14 +35,14 @@ class ByAccidentBot():
   # Post: Replies to the comment with the appropriate reply template.
   def replyToComment(self, comment):
     if comment.id in self.commentDictionary:
-      return False
+      return
     else:
       ancestor = comment
 
       while not ancestor.is_root:
         ancestor = ancestor.parent()
         if ancestor.id in self.commentDictionary:
-          return False
+          return
 
       try:
         now = datetime.now(timezone.utc)
@@ -75,7 +69,7 @@ class ByAccidentBot():
   # Pre:  There are valid comments associated with the account.
   # Post: All comments below at or below 0 are deleted.
   def autoDeleteScoreCheck(self):
-    threading.Timer(3600.0, self.autoDeleteScoreCheck, []).start()
+    self.autoThread = threading.Timer(3600.0, self.autoDeleteScoreCheck, []).start()
 
     for comment in self.account.comments.new(limit=50):
       try:

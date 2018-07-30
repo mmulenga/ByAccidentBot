@@ -18,20 +18,35 @@ class Firebase():
           u'timestamp': value
         })
         break
-      except Exception:
+      except Exception as e:
+        print(e)
         print('Error writing to database. Trying again...')
         pass
 
   def pull(self, collection):
-    delta = datetime.now() - timedelta(days=1)
-    coll_ref = self.db.collection(collection)
-    query = coll_ref.where(u'timestamp', u'>', delta)
+    while True:
+      try:
+        delta = datetime.now() - timedelta(days=1)
+        coll_ref = self.db.collection(collection)
+        query = coll_ref.where(u'timestamp', u'>', delta)
+        break
+      except Exception as e:
+        print(e)
+        print('Error reading from database. Trying again...')
+        pass
 
     return query.get()
 
   def pullAll(self, collection):
-    coll_ref = self.db.collection(collection)
-    query = coll_ref.order_by(u'timestamp', direction=firestore.Query.ASCENDING)
+    while True:
+      try:
+        coll_ref = self.db.collection(collection)
+        query = coll_ref.order_by(u'timestamp', direction=firestore.Query.ASCENDING)
+        break
+      except Exception as e:
+        print(e)
+        print('Error reading from database. Trying again...')
+        
     return query.get()
 
   def delete(self):
