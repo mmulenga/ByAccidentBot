@@ -1,6 +1,8 @@
 # By-Accident-Bot
 > A reddit bot built to correct and track the usage of the phrase "on accident" on reddit.
 
+[![CircleCI](https://circleci.com/gh/mmulenga/ByAccidentBot.svg?style=svg)](https://circleci.com/gh/mmulenga/ByAccidentBot)
+
 ## How does it work?
 Using PRAW the bot parses through reddit comments looking for the usage of "on accident". 
 Once it finds an occurrence it responds to the offending comment with a GIF and a 

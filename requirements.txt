@@ -7,3 +7,5 @@ dash-core-components==0.23.0
 firebase-admin
 google-cloud-firestore
 pandas
+django
+djangorestframework

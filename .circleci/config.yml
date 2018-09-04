@@ -28,7 +28,7 @@ jobs:
           - v1-dependencies-
 
       - run:
-          name: install dependencies
+          name: Install Dependencies
           command: |
             python3 -m venv venv
             . venv/bin/activate
@@ -45,12 +45,13 @@ jobs:
       # https://pytest.org
       # https://nose.readthedocs.io
       - run:
-          name: run tests
+          name: Run Tests
           command: |
             . venv/bin/activate
             echo $PRAW_INI | base64 --decode --ignore-garbage > ${HOME}/repo/praw.ini
             echo $FIREBASE_CREDENTIALS | base64 --decode --ignore-garbage > ${HOME}/repo/firebase-credentials.json
             python3 -m unittest testing/test_byaccidentbot.py
+            python3 -m unittest testing/test_firebase.py
 
       - store_artifacts:
           path: test-reports

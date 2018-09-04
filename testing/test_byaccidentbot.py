@@ -1,5 +1,4 @@
 import unittest
-import praw
 import threading
 from byaccidentbot import ByAccidentBot
 from unittest.mock import patch
@@ -80,7 +79,7 @@ class TestByAccidentBot(unittest.TestCase):
     self.patchPraw.stop()
     self.patchFire.stop()
 
-    # Stop the timer thread.
+    # Stop the timer thread created in autoDeleteScoreCheck.
     threading.enumerate()[1].cancel()
   
   if __name__ == "__main__":
